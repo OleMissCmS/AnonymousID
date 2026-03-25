@@ -45,9 +45,9 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1>Survey Anonymous ID</h1>
-        <p>Enter your student ID to get (or retrieve) your anonymous survey ID.</p>
-
+        <p className={styles.lead}>
+          Enter your student ID to get (or retrieve) your anonymous survey ID.
+        </p>
         <form onSubmit={onSubmit} style={{ width: "100%", maxWidth: 520 }}>
           <label htmlFor="studentId" style={{ display: "block", marginBottom: 6 }}>
             Student ID
@@ -64,7 +64,7 @@ export default function Home() {
             disabled={loading || !studentId.trim()}
             style={{ marginTop: 12, padding: "10px 12px", width: "100%" }}
           >
-            {loading ? "Generating..." : "Get anonymous ID"}
+            {loading ? "Working..." : "Get or retrieve your anonymous ID"}
           </button>
         </form>
 

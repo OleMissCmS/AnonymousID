@@ -13,29 +13,37 @@ function requireEnv(name: string): string {
   return value;
 }
 
-function decodeBase64ToBuffer(name: string, expectedBytes?: number): Buffer {
-  // Expect base64-encoded raw bytes.
-  const value = requireEnv(name);
-  const buf = Buffer.from(value, "base64");
-
-  if (buf.length === 0) {
-    throw new Error(`${name} did not decode from base64`);
+function trimEnvQuotes(value: string): string {
+  const t = value.trim();
+  if (
+    (t.startsWith('"') && t.endsWith('"')) ||
+    (t.startsWith("'") && t.endsWith("'"))
+  ) {
+    return t.slice(1, -1).trim();
   }
-  if (expectedBytes != null && buf.length !== expectedBytes) {
-    throw new Error(`${name} must decode to exactly ${expectedBytes} bytes (got ${buf.length})`);
-  }
-
-  return buf;
+  return t;
 }
 
+/**
+ * HMAC key: base64 raw bytes if that decodes to a non-empty buffer; otherwise UTF-8 bytes of the string.
+ * (Plain passphrases in Vercel env are common and should work.)
+ */
 export function getHmacSecret(): Buffer {
-  // No strict length requirement for HMAC; we just validate it decodes.
-  return decodeBase64ToBuffer("HMAC_SECRET");
+  const raw = trimEnvQuotes(requireEnv("HMAC_SECRET"));
+  const fromB64 = Buffer.from(raw, "base64");
+  if (fromB64.length > 0) return fromB64;
+  return Buffer.from(raw, "utf8");
 }
 
+/**
+ * AES-256 key (32 bytes): base64 if it decodes to 32 bytes; else 64-char hex; else SHA-256(UTF-8).
+ */
 export function getEncKey(): Buffer {
-  // AES-256-GCM key size is 32 bytes.
-  return decodeBase64ToBuffer("ENC_KEY", 32);
+  const raw = trimEnvQuotes(requireEnv("ENC_KEY"));
+  const fromB64 = Buffer.from(raw, "base64");
+  if (fromB64.length === 32) return fromB64;
+  if (/^[0-9a-fA-F]{64}$/.test(raw)) return Buffer.from(raw, "hex");
+  return crypto.createHash("sha256").update(raw, "utf8").digest();
 }
 
 export function computeLookupHash(canonicalStudentId: string): string {

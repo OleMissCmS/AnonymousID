@@ -30,6 +30,14 @@
   padding: 120px 60px;
 }
 
+.lead {
+  margin: 0 0 10px;
+  max-width: 440px;
+  font-size: 18px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
 .intro {
   display: flex;
   flex-direction: column;

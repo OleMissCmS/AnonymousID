@@ -16,9 +16,23 @@ type StoredEncryptedAnonId = {
   anon_id_tag: string;
 };
 
+function safeErrorMessage(err: unknown): string {
+  if (err instanceof Error) {
+    const msg = err.message || "Unknown error";
+    if (msg.length > 280) return `${msg.slice(0, 277)}...`;
+    return msg;
+  }
+  return "Unexpected error generating anonymous ID";
+}
+
 export async function POST(req: Request) {
   try {
-    const body = (await req.json()) as { studentId?: string };
+    let body: { studentId?: string };
+    try {
+      body = (await req.json()) as { studentId?: string };
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
     const rawStudentId = body.studentId;
 
     if (!rawStudentId || typeof rawStudentId !== "string") {
@@ -81,9 +95,10 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ anonymousId: storedAnonymousId });
-  } catch {
+  } catch (err) {
+    console.error("[anon-id]", err);
     return NextResponse.json(
-      { error: "Unexpected error generating anonymous ID" },
+      { error: safeErrorMessage(err) },
       { status: 500 },
     );
   }

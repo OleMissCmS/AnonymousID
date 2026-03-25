@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Survey Anonymous ID",
+  title: "Anonymous survey ID",
   description: "Get a stable anonymous ID for your survey from your student ID.",
 };
 
