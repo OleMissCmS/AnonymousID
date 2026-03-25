@@ -5,6 +5,23 @@ This app maps a student ID to a stable anonymous survey ID using:
 - AES-256-GCM encrypted anonymous IDs
 - Upstash Redis as the key-value store (Vercel-friendly)
 
+## Vercel setup
+
+In the Vercel project settings for this repo:
+
+- **Framework Preset**: Next.js (the repo includes `vercel.json` to reinforce this)
+- **Root Directory**: leave empty (repository root)
+- **Build Command**: default (`next build` / `npm run build`)
+- **Output Directory**: leave **empty** — do not set `public` or `.next` manually for Next.js
+- **Install Command**: default
+
+Set these environment variables (Production):
+
+- `HMAC_SECRET`, `ENC_KEY`
+- `AID_KV_REST_API_URL`, `AID_KV_REST_API_TOKEN`
+
+If the site shows a plain-text `NOT_FOUND` from Vercel (not your app UI), the deployment usually is not being built as Next.js or the output/root directory is misconfigured. See [Vercel NOT_FOUND](https://vercel.com/docs/errors/NOT_FOUND).
+
 ## Getting Started
 
 First, run the development server:
