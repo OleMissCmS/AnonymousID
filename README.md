@@ -15,10 +15,16 @@ In the Vercel project settings for this repo:
 - **Output Directory**: leave **empty** — do not set `public` or `.next` manually for Next.js
 - **Install Command**: default
 
-Set these environment variables (Production):
+Set these environment variables under **Production** (and redeploy after saving):
 
-- `HMAC_SECRET`, `ENC_KEY`
-- `AID_KV_REST_API_URL`, `AID_KV_REST_API_TOKEN`
+| Variable | Purpose |
+|----------|---------|
+| `HMAC_SECRET` | Secret for HMAC lookup (any strong string or base64 bytes) |
+| `ENC_KEY` | Secret for encrypting stored anonymous IDs (string, hex64, or base64→32 bytes) |
+| `AID_KV_REST_API_URL` | Upstash Redis REST URL |
+| `AID_KV_REST_API_TOKEN` | Upstash Redis REST token (read/write) |
+
+If the app returns **Missing required environment variable: HMAC_SECRET** (or similar), one of these is not set for **Production** or the project was not redeployed after adding them.
 
 If the site shows a plain-text `NOT_FOUND` from Vercel (not your app UI), the deployment usually is not being built as Next.js or the output/root directory is misconfigured. See [Vercel NOT_FOUND](https://vercel.com/docs/errors/NOT_FOUND).
 

@@ -9,6 +9,13 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  function onStudentIdChange(value: string) {
+    setStudentId(value);
+    // Hide prior result/error while editing so nothing "pops up" from the last submit
+    setAnonymousId(null);
+    setError(null);
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
 
@@ -56,8 +63,12 @@ export default function Home() {
             <input
               id="studentId"
               className={styles.input}
+              name="student-id"
               value={studentId}
-              onChange={(e) => setStudentId(e.target.value)}
+              onChange={(e) => onStudentIdChange(e.target.value)}
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
               required
             />
             <button

@@ -18,8 +18,11 @@ type StoredEncryptedAnonId = {
 
 function safeErrorMessage(err: unknown): string {
   if (err instanceof Error) {
-    const msg = err.message || "Unknown error";
-    if (msg.length > 280) return `${msg.slice(0, 277)}...`;
+    let msg = err.message || "Unknown error";
+    if (msg.startsWith("Missing required environment variable:")) {
+      msg = `${msg} Add it in Vercel: Project → Settings → Environment Variables (Production), then redeploy. Required: HMAC_SECRET, ENC_KEY, AID_KV_REST_API_URL, AID_KV_REST_API_TOKEN.`;
+    }
+    if (msg.length > 500) return `${msg.slice(0, 497)}...`;
     return msg;
   }
   return "Unexpected error generating anonymous ID";
