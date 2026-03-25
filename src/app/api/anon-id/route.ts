@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { randomUUID } from "node:crypto";
 import {
   canonicalizeStudentId,
   computeLookupHash,
   decryptString,
   encryptString,
+  generateAnonymousId,
 } from "@/lib/crypto";
 import { getLookupKey, getRedisClient } from "@/lib/redis";
 
@@ -69,8 +69,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ anonymousId });
     }
 
-    // Create a new anonymous UUID and encrypt it before storing.
-    const anonymousId = randomUUID();
+    // Create a new 6-char anonymous id (a-z, 0-9) and encrypt before storing.
+    const anonymousId = generateAnonymousId();
     const encrypted = encryptString(anonymousId);
 
     const toStore: StoredEncryptedAnonId = {

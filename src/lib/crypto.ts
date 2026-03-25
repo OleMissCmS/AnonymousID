@@ -96,3 +96,15 @@ export function decryptString(enc: EncryptedString): string {
   return new TextDecoder().decode(plaintext);
 }
 
+const ANON_ID_ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789";
+const ANON_ID_LENGTH = 6;
+
+/** Exactly six characters: lowercase letters and digits only. */
+export function generateAnonymousId(): string {
+  let s = "";
+  for (let i = 0; i < ANON_ID_LENGTH; i++) {
+    s += ANON_ID_ALPHABET[crypto.randomInt(ANON_ID_ALPHABET.length)];
+  }
+  return s;
+}
+
