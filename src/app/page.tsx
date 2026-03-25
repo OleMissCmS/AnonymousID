@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -8,6 +8,11 @@ export default function Home() {
   const [anonymousId, setAnonymousId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [copyLabel, setCopyLabel] = useState("Copy");
+
+  useEffect(() => {
+    setCopyLabel("Copy");
+  }, [anonymousId]);
 
   function onStudentIdChange(value: string) {
     setStudentId(value);
@@ -49,6 +54,18 @@ export default function Home() {
     }
   }
 
+  async function copyAnonymousId() {
+    if (!anonymousId) return;
+    try {
+      await navigator.clipboard.writeText(anonymousId);
+      setCopyLabel("Copied!");
+      window.setTimeout(() => setCopyLabel("Copy"), 2000);
+    } catch {
+      setCopyLabel("Could not copy");
+      window.setTimeout(() => setCopyLabel("Copy"), 2500);
+    }
+  }
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -85,7 +102,16 @@ export default function Home() {
           {anonymousId ? (
             <section className={styles.result}>
               <p className={styles.resultLabel}>Your anonymous ID:</p>
-              <code className={styles.resultCode}>{anonymousId}</code>
+              <div className={styles.resultRow}>
+                <code className={styles.resultCode}>{anonymousId}</code>
+                <button
+                  type="button"
+                  className={styles.copyButton}
+                  onClick={() => void copyAnonymousId()}
+                >
+                  {copyLabel}
+                </button>
+              </div>
             </section>
           ) : null}
         </div>
