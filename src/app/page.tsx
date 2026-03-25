@@ -45,39 +45,39 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <p className={styles.lead}>
-          Enter your student ID to get (or retrieve) your anonymous survey ID.
-        </p>
-        <form onSubmit={onSubmit} style={{ width: "100%", maxWidth: 520 }}>
-          <label htmlFor="studentId" style={{ display: "block", marginBottom: 6 }}>
-            Student ID
-          </label>
-          <input
-            id="studentId"
-            value={studentId}
-            onChange={(e) => setStudentId(e.target.value)}
-            required
-            style={{ width: "100%", padding: "10px 12px" }}
-          />
-          <button
-            type="submit"
-            disabled={loading || !studentId.trim()}
-            style={{ marginTop: 12, padding: "10px 12px", width: "100%" }}
-          >
-            {loading ? "Working..." : "Get or retrieve your anonymous ID"}
-          </button>
-        </form>
+        <div className={styles.stack}>
+          <p className={styles.lead}>
+            Enter your student ID to get (or retrieve) your anonymous survey ID.
+          </p>
+          <form className={styles.form} onSubmit={onSubmit}>
+            <label className={styles.label} htmlFor="studentId">
+              Student ID
+            </label>
+            <input
+              id="studentId"
+              className={styles.input}
+              value={studentId}
+              onChange={(e) => setStudentId(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              className={styles.submit}
+              disabled={loading || !studentId.trim()}
+            >
+              {loading ? "Working..." : "Get or retrieve your anonymous ID"}
+            </button>
+          </form>
 
-        {error ? (
-          <p style={{ marginTop: 18, color: "crimson" }}>{error}</p>
-        ) : null}
+          {error ? <p className={styles.error}>{error}</p> : null}
 
-        {anonymousId ? (
-          <section style={{ marginTop: 18 }}>
-            <p>Your anonymous ID:</p>
-            <code style={{ wordBreak: "break-all" }}>{anonymousId}</code>
-          </section>
-        ) : null}
+          {anonymousId ? (
+            <section className={styles.result}>
+              <p className={styles.resultLabel}>Your anonymous ID:</p>
+              <code className={styles.resultCode}>{anonymousId}</code>
+            </section>
+          ) : null}
+        </div>
       </main>
     </div>
   );

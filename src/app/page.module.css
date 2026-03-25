@@ -1,6 +1,6 @@
 .page {
   --background: #fafafa;
-  --foreground: #fff;
+  --card: #fff;
 
   --text-primary: #000;
   --text-secondary: #666;
@@ -14,28 +14,104 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 100dvh;
+  padding: 24px 16px;
+  box-sizing: border-box;
   font-family: var(--font-geist-sans);
   background-color: var(--background);
 }
 
 .main {
   display: flex;
-  flex: 1;
   width: 100%;
-  max-width: 800px;
+  max-width: 520px;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--card);
+  padding: 32px 28px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .lead {
-  margin: 0 0 10px;
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 1.45;
+  margin: 0 0 16px;
+  width: 100%;
+  font-size: 16px;
+  line-height: 1.35;
+  text-align: center;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  box-sizing: border-box;
+}
+
+.submit {
+  margin-top: 12px;
+  padding: 10px 12px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.error {
+  margin-top: 18px;
+  color: crimson;
+  text-align: center;
+  width: 100%;
+  font-size: 14px;
+}
+
+.result {
+  margin-top: 18px;
+  text-align: center;
+  width: 100%;
+}
+
+.resultLabel {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.resultCode {
+  word-break: break-all;
+  display: block;
+  text-align: center;
+  font-size: 14px;
 }
 
 .intro {
@@ -117,7 +193,11 @@ a.secondary {
 
 @media (max-width: 600px) {
   .main {
-    padding: 48px 24px;
+    padding: 24px 20px;
+  }
+
+  .lead {
+    font-size: 14px;
   }
 
   .intro {
@@ -137,14 +217,18 @@ a.secondary {
   }
 
   .page {
-    --background: #000;
-    --foreground: #000;
+    --background: #0a0a0a;
+    --card: #141414;
 
     --text-primary: #ededed;
-    --text-secondary: #999;
+    --text-secondary: #a3a3a3;
 
     --button-primary-hover: #ccc;
     --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
+    --button-secondary-border: #2a2a2a;
+  }
+
+  .main {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   }
 }
